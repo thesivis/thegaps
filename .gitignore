@@ -1,0 +1,11 @@
+estagio_aws_key_ubuntu.pem
+/key_amazon
+/env
+estagio/arquivos/u/
+arquivos
+estagio/db.sqlite3
+estagio/.idea/workspace.xml
+/venv
+lib
+*.pyc
+**/__pycache__

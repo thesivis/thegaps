@@ -1,0 +1,62 @@
+.container{
+    display: table;
+    width: 100%;
+}
+
+.centro{
+    display: table;
+    margin:auto;
+}
+
+.banner{
+    background-color: #f9f9f9;
+    height: 100px;
+    margin-top: 1px;
+}
+
+.textoBanner{
+    text-align: center;
+    font-size: 40px;
+}
+#lateral{
+    width: 90px;
+    float: left;
+}
+
+#tabelaPesquisa{
+    background-color: transparent;
+    border-color: transparent;
+}
+
+#tabelaCorpo tr{
+  background-color: #00b3ee;
+}
+
+.place{
+    margin-bottom: 1px;
+    padding-top: 1px;
+    border-top: solid 0px #9d9d9d;
+}
+
+body
+{
+    background-color: #f9f9f9;
+}
+
+input,text,select{
+   cursor:Pointer;
+}
+
+#pesquisa{
+    display: table;
+    margin: auto;
+}
+
+.tudo{
+    margin-left: 5px;
+}
+
+
+
+
+

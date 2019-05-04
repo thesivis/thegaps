@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+    <div class="container">
+
+        <div class="place banner">
+                <div id="lateral">
+                        <a href="{% url 'home:home' %}">
+                           <img  style="
+                                   margin-left: auto;
+                                   margin-right: auto;
+                                   display: block;"
+                                   width="90px"
+                                   src="{% static 'img/ufmt_logo.png' %}"/>
+                        </a>
+                    </div>
+            <h4 class="textoBanner">{% trans "gaps_analize" %}</h4>
+        </div>
+         <div class="tudo">
+                <div class="place" id="pesquisa">
+                    <div id="tabelaGeralPesquisa">
+                            <form  method="post" id="searchFields">
+                                {% csrf_token %}
+                                <table  class="table" id="tabelaPesquisa">
+                                <thead>
+                                <tr>
+                                    <th>{% trans 'min_gaps_percent' %}</th>
+                                    <th>{% trans 'max_gaps_percent' %}</th>
+                                    <th>{% trans 'gaps_type' %}</th>
+                                    <th>{% trans 'gaps_set' %}</th>
+{#                                    <th>{% trans 'gaps_variable' %}</th>#}
+                                    <th>{% trans 'search' %}</th>
+                                </tr>
+                                </thead>
+                                    <tbody>
+                                       <tr>
+                                            {% for f in form %}
+                                                <td style="width: 10px">{{ f }}</td>
+                                            {% endfor %}
+                                       <td><button class="glyphicon glyphicon-search"  name="pesquisa" type="submit" value="{% trans 'search' %}"></button></td>
+                                       </tr>
+                                    </tbody>
+                                  </table>
+                            </form>
+                    </div>
+                </div>
+
+                <div class="place resultado">
+                    
+                    <div id="volta_dir"></div>
+                    <form method="get" id="baixarPesquisa">
+                      {% csrf_token %}
+                    <div id="idBaixarPesquisa" style="padding-left: 94%"></div>
+                        <div>
+                            <table class="table table-striped" style="width: 100%">
+                                <thead >
+                                    <tr>
+                                        <th>#</th>
+                                        <th>{% trans 'directory_file' %}</th>
+                                        <th>{% trans 'gaps_percent' %}</th>
+                                        <th>{% trans 'gaps_type' %}</th>
+                                        <th>{% trans 'gaps_set' %}</th>
+                                        <th>{% trans 'download' %}</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabela" >
+                                    {% for arquivos in paginado %}
+                                        <tr>
+                                            <td>{{forloop.counter }}</td>
+                                            <td>{{arquivos.arquivo}}</td>
+                                            <td>{{arquivos.percent}}</td>
+                                            <td>{{arquivos.type_name}}</td>
+                                            <td>{{arquivos.column_name}}</td>
+                                            <td><input name="PESQUISA" id="{{ forloop.counter }}" type="checkbox" data-status="desativado"  onclick="seleciona(this)" value="{{ arquivos.diretorio|add:"/"|add:arquivos.arquivo }}"></td>
+                                        </tr>
+                                     {% endfor %}
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                      <div class="centro">
+                            <a type="button" class="btn btn-info btn-group-sm" onclick="compactaPesquisa(this)" data-toggle="collapse" id="abreUm" data-target="#abre1">{% trans 'download_selected' %}</a>
+                            <a type="button" class="btn btn-info btn-group-sm" data-toggle="modal" data-target="#myModal">{% trans 'download_all' %}</a>
+                      </div>
+                       
+                      <div id="paginacao" class="pagination centro">
+                            {% if paginado.has_other_pages %}
+                                <ul class="pagination">
+                                    {% if paginado.has_previous %}
+                                        <li><a href="?page=1{% for key, value in items %}{% if key != 'page' and key != 'csrfmiddlewaretoken' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">&laquo;&laquo;</a></li>
+                                    {% else %}
+                                        <li class="disabled"><span>&laquo;&laquo;</span></li>
+                                    {% endif %}
+                                    {% if paginado.has_previous %}
+                                        <li><a href="?page={{ paginado.previous_page_number }}{% for key, value in items %}{% if key != 'page' and key != 'csrfmiddlewaretoken' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">&laquo;</a></li>
+                                    {% else %}
+                                        <li class="disabled"><span>&laquo;</span></li>
+                                    {% endif %}
+                                    {% for i in limite_paginas %}
+                                        {% if paginado.number == i %}
+                                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                                        {% else %}
+                                            <li><a href="?page={{ i }}{% for key, value in items %}{% if key != 'page' and key != 'csrfmiddlewaretoken' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ i }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if paginado.has_next %}
+                                        <li><a href="?page={{ paginado.next_page_number }}{% for key, value in items %}{% if key != 'page' and key != 'csrfmiddlewaretoken' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">&raquo;</a></li>
+                                    {% else %}
+                                        <li class="disabled"><span>&raquo;</span></li>
+                                    {% endif %}
+                                    {% if paginado.has_next %}
+                                        <li><a href="?page={{ paginado.paginator.num_pages }}{% for key, value in items %}{% if key != 'page' and key != 'csrfmiddlewaretoken' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">&raquo;&raquo;</a></li>
+                                    {% else %}
+                                        <li class="disabled"><span>&raquo;&raquo;</span></li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+                            <br/>
+                            {% load mathfilters %}
+                            <ul class="pagination" style="margin:0px">
+                                <li><span>{% trans 'pages' %} {{ paginado.number }} {% trans 'of' %} {{ paginado.paginator.num_pages }}.</span></li>
+                                <li><span>{% trans 'found_files' %} {{ paginado.paginator.count}}.</span></li>
+                            </ul>
+                            
+                      </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{% trans 'download_search' %}</h4>
+      </div>
+
+      <div class="modal-body">
+        <p style="color: red">{% trans 'email_text' %}</p>
+        <p>{% trans 'files_format_text' %}</p>
+      </div>
+      <div style="height: 100px; width: 400px; padding-left: 20%">
+          <form action="{% url 'home:requisicao_enviada' %}" id="requestForm">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Email</th>
+                    <th>{% trans 'action' %}</th>
+                </tr>
+                <td style="text-align: left; font-size: 20px"><input name="email" id="email" type="email"></td>
+                <td style="text-align: left"><button type="button" onclick="enviar(this,'searchFields')" class="btn btn-info">{% trans 'continued' %}</button></td>
+                </tr>
+            </table>
+          </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{%  endblock %}
+

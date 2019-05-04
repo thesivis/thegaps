@@ -1,0 +1,17 @@
+version: '3'
+services:
+  pyimg1:
+      build: .
+      volumes:
+        -  ./arquivos:/arquivos
+        -  ./home/david/Documentos/projeto_estagio_django:/home
+      expose:
+        - "8000"
+      ports:
+        - "8000:8000"
+      image: projeto_ufmt/server
+      container_name: projeto1
+
+
+
+

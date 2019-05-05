@@ -40,7 +40,7 @@ var seleciona = function (elem)
 
 
 var baixaPesquisa = function (id,chave) {
-  window.open('ajax/baixar_pesquisa/?chave='+chave);
+  window.open('baixar_pesquisa/?chave='+chave);
 };
 
 var define_sessao = function (e) {

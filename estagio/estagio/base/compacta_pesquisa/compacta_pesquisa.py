@@ -25,8 +25,8 @@ def compacta_toda_pesquisa(request,chave,email):
     print('Compactando: ' + str(chave['chave']))
     imprime = 0
 
-    zip_path = '/2014.csv'
-    zf.write('../2014.csv', zip_path)
+    zf.write(settings.APPEND_FILES + '2014.csv', '/2014.csv')
+    zf.write(settings.APPEND_FILES + 'README.txt', '/README.txt')
 
     for valor in request:
         value = str(valor['diretorio'] + '/' +valor['arquivo'])

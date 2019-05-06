@@ -154,6 +154,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'estagio','arquivos')
 BASE_MEDIA_URL = '/media/raphael/DISK/Thiago/'
 MEDIA_URL = os.path.join(BASE_MEDIA_URL,'testes/')
 COMPACTA_URL = os.path.join(BASE_MEDIA_URL,'arquivos/')
+APPEND_FILES = os.path.join(BASE_DIR,'arquivos')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),

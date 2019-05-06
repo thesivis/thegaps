@@ -48,6 +48,10 @@ def compacta_pesquisa_selecionada(request,chave):
     for value in request:
         arquivos.append(value)
     zf = zipfile.ZipFile(chave['chave']+".zip", "w")
+
+    zf.write(settings.APPEND_FILES + '2014.csv', '/2014.csv')
+    zf.write(settings.APPEND_FILES + 'README.txt', '/README.txt')
+    
     for value in arquivos:
         fdir, fname = os.path.split(value.replace(settings.MEDIA_URL,''))
         zip_subdir = str(fdir)

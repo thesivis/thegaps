@@ -37,6 +37,15 @@ Example
 
 ## Start TheGaps
 
+Before start is necessary to configure the path to folders, edit setting.py:
+
+```
+BASE_MEDIA_URL = '/path/to/files/test'
+MEDIA_URL = os.path.join(BASE_MEDIA_URL,'file/tests/')
+COMPACTA_URL = os.path.join(BASE_MEDIA_URL,'folder/to/compact/')
+APPEND_FILES = os.path.join(BASE_DIR,'files/to/append/')
+```
+
 Start celery:
 
 Enter at folder estagio:
